@@ -1,5 +1,5 @@
 # gout - like echo written in golang
-[Build](https://travis-ci.org/kklipsch/gout.svg?branch=master)
+![Build](https://travis-ci.org/kklipsch/gout.svg?branch=master)
 
 For scratch based containers putting this in the container allows you to print things.
 
