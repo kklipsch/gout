@@ -1,8 +1,11 @@
 package main
 
-import "os"
-import "fmt"
+import (
+	"fmt"
+	"os"
+	"strings"
+)
 
 func main() {
-	fmt.Println(os.Args[1])
+	fmt.Println(strings.Join(os.Args[1:], " "))
 }
