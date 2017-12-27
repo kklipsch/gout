@@ -12,5 +12,5 @@ deploy:
     tags: true
 after_depoy:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_API_KEY"
-  - docker build -t $DOCKER_USERNAME/gout
-  - docker push $DOCKER_USERNAME/gout
+  - docker build -t $DOCKER_USERNAME/gout:$TRAVIS_TAG
+  - docker push $DOCKER_USERNAME/gout:$TRAVIS_TAG
