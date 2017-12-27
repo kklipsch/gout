@@ -1,11 +1,12 @@
 language: go
 go:
 - 1.x
-script: 
-        - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
-        - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_API_KEY"
-        - docker build -t $DOCKER_USERNAME/gout:latest .
-        - docker push $DOCKER_USERNAME/gout:latest
+jobs:
+  include:
+  - stage: build
+    script: CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
+  - stage: docker
+    script: docker.sh latest
 deploy:
   provider: releases
   api_key:
@@ -14,7 +15,4 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-after_depoy:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_API_KEY"
-  - docker build -t $DOCKER_USERNAME/gout:$TRAVIS_TAG .
-  - docker push $DOCKER_USERNAME/gout:$TRAVIS_TAG
+after_depoy: docker.sh $TRAVIS_TAG
