@@ -1,4 +1,4 @@
 FROM scratch
 
-ADD gout/gout /
+ADD gout /
 CMD ["/gout", "hello world"] 
