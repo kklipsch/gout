@@ -4,8 +4,7 @@ go:
 - 1.x
 services:
 - docker
-script:
-    script: CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
+script: CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
 after_success:  
  - if [ "$TRAVIS_BRANCH" == "master" ]; then
         docker.sh latest
