@@ -1,0 +1,12 @@
+language: go
+go:
+- 1.x
+script: CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
+deploy:
+  provider: releases
+  api_key:
+    secure: N9LakqbeNac85GVTIcvr5XVi3izdFvsVtXu8R6jyTez9Si41E9VpJvHTTEQqkaxC4n1xspZJ+SPVHFx7zWG4hza7gaa3dLxAf9R8D+iYPZR7lA7yP20d8keE+d2dsjNfPncay0KJL1abaHnz3qLOYF83I8AuMixbHhbZfT4WEK+Eo8d//yAKYLs06uHAjWETNYPUFWfhrQKLsoMQyNM9L8f2fxnw9GilyTSvPviYPjCkjo1MQJJy0Axxo9Q3+iu+hQGK4q6E6mIDNWS4jixvf/uQJFLIcUISYQ1ZjItp8alh3m+ARWz6qrflQZACsPOSttz1tKzXOHcZbYLDGZA03Ixt4b3f+TrAp3wRHR7qgTm+8qMLKlSVhTcyAbFe5kHzUdcWelODA1zcYjcxTlr4gZIr0+f5geeGLXcw7ikatRszbqE6uWW06LKWR0AmpFS7rpiD9GjgIQnGSxE9Bvq+VWnfqlFG2m7WuPI8TxA/jlm31aDSHdzufYeZiGksOerV7Tz+Boa6HeT4MHsD4uozUZ5OWNaxpeIXvXfs4Rmn4KZidzABEX1XivUa4IPWPlmsgMzNrmeGZL/9RLX6JRoWCg1NI6t79s9BYEnm+HDILKSIL3KVf69ojYsffIQ5BZv1MozCvAI7gNVkKnbzsdQHUxz4CpCqqAd5FqxivVLLP3M=
+  file: gout
+skip_cleanup: true
+on:
+  tags: true
