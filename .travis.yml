@@ -1,14 +1,21 @@
+sudo: required
+services:
+- docker
 language: go
 go:
-- 1.x
-script: 
+- '1.x'
+script:
 - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
-- chmod u+x gout
-deploy:
-  provider: releases
-  api_key:
-    secure: N9LakqbeNac85GVTIcvr5XVi3izdFvsVtXu8R6jyTez9Si41E9VpJvHTTEQqkaxC4n1xspZJ+SPVHFx7zWG4hza7gaa3dLxAf9R8D+iYPZR7lA7yP20d8keE+d2dsjNfPncay0KJL1abaHnz3qLOYF83I8AuMixbHhbZfT4WEK+Eo8d//yAKYLs06uHAjWETNYPUFWfhrQKLsoMQyNM9L8f2fxnw9GilyTSvPviYPjCkjo1MQJJy0Axxo9Q3+iu+hQGK4q6E6mIDNWS4jixvf/uQJFLIcUISYQ1ZjItp8alh3m+ARWz6qrflQZACsPOSttz1tKzXOHcZbYLDGZA03Ixt4b3f+TrAp3wRHR7qgTm+8qMLKlSVhTcyAbFe5kHzUdcWelODA1zcYjcxTlr4gZIr0+f5geeGLXcw7ikatRszbqE6uWW06LKWR0AmpFS7rpiD9GjgIQnGSxE9Bvq+VWnfqlFG2m7WuPI8TxA/jlm31aDSHdzufYeZiGksOerV7Tz+Boa6HeT4MHsD4uozUZ5OWNaxpeIXvXfs4Rmn4KZidzABEX1XivUa4IPWPlmsgMzNrmeGZL/9RLX6JRoWCg1NI6t79s9BYEnm+HDILKSIL3KVf69ojYsffIQ5BZv1MozCvAI7gNVkKnbzsdQHUxz4CpCqqAd5FqxivVLLP3M=
-  file: gout
-  skip_cleanup: true
-  on:
-    tags: true
+env:
+  global:
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - secure: Vs6rAH1vG9/aPIHf1cxtdRTgpeAYtET3CzgTF4hvSu6czrQWoD6QWp/Xl5fuXer+KrBVZevPsWEddqn+Y+oNplIVv7HSn6cT+dZtpacZZnJ/BRMgvIrnwultWIAcQVDPaS5lo6DxQjv+ni07nvAGeqIKhpZ4NC6G3i9bohLPRACOMTTJWeRGFsG3cwglWPVZD98KhTlcVD5ysFE8G8btS+ktBG9xU7zo//kS2JEC5VFZSaOGcaLABaNM1AU7fr6VAm0OqPJouPRG6EFCKNV7TSHk35N3aVJ9lOxgZvLqGoMU4Mw8TAT/r+CZ/l4MzjqubaYAeXTcpufkNpD/6NGr7x1/PKdXVaZHGH2QhPRyUOOPJdiX4OW+hYgO6P6DjtIWwomopDmTINBlxrORzyAse+JKikCWWWcNqOSSDCQ7pTaG8YsVY/evwm46n10hg/IOgMyGN4TdC6EcrlOWjJZn7WAWW5pVQsOZzaEILmUk/dcuvuHrOBA4HIp3cS5CndZmBlKm7e9xJ3ncAsl+iM/xyU/yYaSrI3ZLuIPFz41QliKmBl9J1lgkbIxTkbbopAwtAZmJ2Y0XDXJ9SxABOzaMKYzh1lCxz2IcAs61Eb4ks/XulM6t9Z2ZhdqAgqbo8fPZBu1XJns7kNlfatW/nQXvdka7JtB72rIIio3xO5IIT7c=
+  - secure: wM464b3WGikLYCM7fdRilfA6Kk0Bn1xRqyi2R+ONCnSM4K72IPu6toGc3xNAsxBmu9b8PmPyBa3ho4HcIbGzVYsMKRZbZ0ha84lk/Q8cIy6VGTZrEXpf+/GhtVIOXHQVheEEkjTwZ4OHm19qwuW8jiTjTRGBbBUCSy/t4IxFWTqOo8YkM0iMK7WmQcFmXM0YLJVbl7wStZjqmNrNEFiHFVHzYNuo7o4GlWFu5uoDRkxLDZIicPQS1GSYgUw0ExqQG8DW4U5ZSjEAQD3ZeDazAFZsPTf3uKfYfN01aBxq7dFEksFdF5WSaKBfuFknwoF3h0TKrVKI53/fOXXPtW+LwRGj3efKnPsstPnpaFqglK9k7NLvdSFXfXgP+1MsElO1cROF8ACCmQLFNavbiiC6/uwMyGlFeZL3JGRAhtfRZw3qlAYBiGGz7kGUttg2qs07GZtivWkZpajtmP20VRDI1bPaCmqF/uftghiSXLYMJGfGl/KK2dh9Ref/BBAAmUPd0oda4JtuMM9mxTWrU6GgRZBCOEDSWH5Tnpdm3q5cwrGA3i7zh+rUjoHZ2Tzt26E3E/JfAJ7YVJ08L8+3X6y5pSbZom2s1U0kYhhvl/roEw3Hp9EbPvRc7t187HC+YEOxShvFhVB93/USAmBmVdB8AjTrPAKxJetwZliP0E5v9Nc=
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - export REPO=kklipsch/gout
+  - export TAG=`if [ -z "$TRAVIS_TAG" ]; then echo $TRAVIS_TAG; else echo "latest" ; fi`
+  - docker build -f Dockerfile -t $REPO:$COMMIT .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $REPO
