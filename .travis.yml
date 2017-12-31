@@ -1,7 +1,9 @@
 language: go
 go:
 - 1.x
-script: CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
+script: 
+- CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
+- chmod u+x gout
 deploy:
   provider: releases
   api_key:
