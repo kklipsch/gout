@@ -6,10 +6,14 @@ else
 	TAG := "latest"
 endif
 
-publish: build
-  	docker login -u $(DOCKER_USER) -p $(DOCKER_PASS)
-   	docker build -f Dockerfile -t $(REPO):$(TAG) .
-   	docker push $(REPO)
+.PHONY: publish
+publish: dockerfile
+	docker push $(REPO)
 
+.PHONY: dockerfile
+dockerfile: build
+	docker build -f Dockerfile -t $(REPO):$(TAG) .
+
+.PHONY: build
 build:
 	CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
