@@ -3,7 +3,7 @@ services:
 - docker
 language: go
 go:
-- '1.x'
+- 1.x
 script:
 - CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' .
 env:
